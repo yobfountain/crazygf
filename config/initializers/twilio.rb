@@ -1,0 +1,5 @@
+ = ENV['CRAZYGF_TWILIO_SECRET'] || raise("Please set twilio secret.")
+ = ENV['CRAZYGF_TWILIO_ACCOUNT_SID'] || raise("Please set twilio account SID.")
+ = ENV['CRAZYGF_TWILIO_MOBILE_NUMBER'] || raise("Please set twilio mobile number.")
+ = ENV['CRAZYGF_TWILIO_SMS_URL'] || raise("Please set twilio sms url.")
+ = ENV['CRAZYGF_TWILIO_VOICE_URL'] || raise("Please set twilio voice url.")
