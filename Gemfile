@@ -15,6 +15,7 @@ gem 'paperclip', '~> 2.7.0'
 gem 'aws-s3'
 gem 'aws-sdk'
 gem 'rails_admin'
+gem 'rails_admin_tag_list'
 gem 'acts-as-taggable-on'
 gem 'devise'
 
