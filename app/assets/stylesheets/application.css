@@ -11,3 +11,9 @@
  *= require_self
  *= require_tree .
 */
+
+body {color:#999; background-color:#000; font-family:Questrial, "Helvetica Neue", Helvetica, arial, sans-serif; font-size:12px; line-height:1.8em; background-image: url(/assets/bck.jpg); padding:0; margin:0;}
+
+h1, h2, h3, h4, h5, h6 {color:#fff; padding:0; margin:0;font-weight:lighter;font-family: Helvetica, arial;line-height:1.2em;}
+h2 {font-size: 1.5em;}
+h3 {font-size:1.2em; margin:1em 0 0 0;}
