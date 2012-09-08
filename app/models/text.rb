@@ -4,6 +4,6 @@ class Text < ActiveRecord::Base
   
   has_attached_file :picture,
       :storage => :s3,
-      :s3_credentials => "#{Rails.root}/config/s3.yml",
+      :s3_credentials => S3_CREDENTIALS,
       :bucket => "crazygf"
 end
