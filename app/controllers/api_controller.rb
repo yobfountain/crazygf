@@ -38,7 +38,11 @@ class ApiController < ApplicationController
     
     if @get_text and @user
       @user.enabled_user
-      @conversation = Conversation.create(:text_id => @get_text.id, :user_id => @user.id)
+      if @dynamic_text
+        @conversation = DynamicConversation.create(:text_id => @get_text.id, :user_id => @user.id)
+      else
+        @conversation = Conversation.create(:text_id => @get_text.id, :user_id => @user.id)
+      end
     end
 
     if @text and @user
