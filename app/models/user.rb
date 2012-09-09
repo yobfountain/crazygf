@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   end 
   
   def self.active_users
-    find :all, :conditions => ['enabled = ?', 1]
+    find :all, :conditions => ['enabled = ?', true]
   end
   
   private
