@@ -18,13 +18,12 @@ class Text < ActiveRecord::Base
     if user.conversations.size == 0
       self.find(:first, :order => "RANDOM()")
     else
-      self.find(:first, :conditions => ["id NOT IN (?)", user.converstion_list], :order => 'RANDOM()')
+      self.find(:first, :conditions => ["id NOT IN (?)", user.conversation_list], :order => 'RANDOM()')
     end
   end
   
   def self.get_text_randomly
     self.find(:first, :order => "RANDOM()")
-  end
-  
+  end 
   
 end

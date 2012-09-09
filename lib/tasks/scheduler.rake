@@ -1,4 +1,4 @@
-desc "This task is called by the Heroku scheduler add-on"
+desc "This task sends out static sms messages"
 task :send_texts => :environment do
     puts "Sending messages..."
     @users = User.all
@@ -18,4 +18,15 @@ task :send_texts => :environment do
       )
     end
     puts "done."
+end
+
+desc "This task updates the users clinginess score"
+task :update_scores => :environment do
+    puts "Updating scores..."
+    @users = User.active_users
+    @users.each do |user|
+      user.score += 1
+      user.save
+    end
+    puts "done updating scores."
 end
