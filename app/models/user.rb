@@ -19,15 +19,23 @@ class User < ActiveRecord::Base
     find :all, :conditions => ['enabled = ?', true]
   end
   
+  def disable_user
+    self.enabled = false
+    self.save
+  end
+  
+  def enabled_user
+    self.enabled = true
+    self.save
+  end
+  
   private
   
   def init_score
     self.score = 0
   end
   
-  def disable_user
-    self.enabled = false
-    self.save
-  end
+
+  
      
 end
