@@ -12,8 +12,39 @@
  *= require_tree .
 */
 
-body {color:#999; background-color:#000; font-family:Questrial, "Helvetica Neue", Helvetica, arial, sans-serif; font-size:12px; line-height:1.8em; background-image: url(/assets/bck.jpg); padding:0; margin:0;}
+body {color:#999; background-color:#000; line-height:1.8em; background-image: url(/assets/bck.jpg); padding:0; margin:0;}
 
-h1, h2, h3, h4, h5, h6 {color:#fff; padding:0; margin:0;font-weight:lighter;font-family: Helvetica, arial;line-height:1.2em;}
-h2 {font-size: 1.5em;}
-h3 {font-size:1.2em; margin:1em 0 0 0;}
+h1 {
+    font-family: 'The Girl Next Door', serif;
+    font-size: 18px;
+    font-weight: lighter;
+    font-variant: normal;
+    text-transform: uppercase;
+    color: #fff;
+    margin-top: 20px;
+    margin-left: 20px;
+    text-align: center!important;
+    letter-spacing: 0.3em;
+}
+
+.gradient {
+    background-image: linear-gradient(bottom, rgb(157,163,173) 37%, rgb(118,118,120) 69%, rgb(97,90,97) 85%);
+    background-image: -o-linear-gradient(bottom, rgb(157,163,173) 37%, rgb(118,118,120) 69%, rgb(97,90,97) 85%);
+    background-image: -moz-linear-gradient(bottom, rgb(157,163,173) 37%, rgb(118,118,120) 69%, rgb(97,90,97) 85%);
+    background-image: -webkit-linear-gradient(bottom, rgb(157,163,173) 37%, rgb(118,118,120) 69%, rgb(97,90,97) 85%);
+    background-image: -ms-linear-gradient(bottom, rgb(157,163,173) 37%, rgb(118,118,120) 69%, rgb(97,90,97) 85%);
+
+    background-image: -webkit-gradient(
+    linear,
+    left bottom,
+    left top,
+    color-stop(0.37, rgb(157,163,173)),
+    color-stop(0.69, rgb(118,118,120)),
+    color-stop(0.85, rgb(97,90,97));
+    );
+}
+
+#container { text-align: center;}
+#page { margin:auto; }
+#sexywoman {border: 2px solid #000; margin-top: 35px;}
+
