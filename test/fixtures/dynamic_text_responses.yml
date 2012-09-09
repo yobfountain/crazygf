@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  text: MyText
+  dynamic_text_id: 1
+
+two:
+  text: MyText
+  dynamic_text_id: 1

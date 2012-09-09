@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909022707) do
+ActiveRecord::Schema.define(:version => 20120909023146) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -42,6 +42,13 @@ ActiveRecord::Schema.define(:version => 20120909022707) do
     t.integer  "text_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "dynamic_text_responses", :force => true do |t|
+    t.text     "text"
+    t.integer  "dynamic_text_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
   end
 
   create_table "dynamic_texts", :force => true do |t|
