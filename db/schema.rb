@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120908230708) do
+ActiveRecord::Schema.define(:version => 20120909022707) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -42,6 +42,17 @@ ActiveRecord::Schema.define(:version => 20120908230708) do
     t.integer  "text_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "dynamic_texts", :force => true do |t|
+    t.string   "name"
+    t.string   "description"
+    t.text     "keywords"
+    t.integer  "score",       :default => 0
+    t.integer  "category_id"
+    t.string   "image_url"
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|
