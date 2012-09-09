@@ -1,7 +1,7 @@
 desc "This task is called by the Heroku scheduler add-on"
 task :send_texts => :environment do
     puts "Sending messages..."
-    @users = User.all
+    @users = User.active_users
     @users.each do |user|
       text = Text.get_text_for_user(user)
       if text

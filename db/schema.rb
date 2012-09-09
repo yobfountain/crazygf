@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120909023146) do
+ActiveRecord::Schema.define(:version => 20120909043355) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -60,6 +60,19 @@ ActiveRecord::Schema.define(:version => 20120909023146) do
     t.string   "image_url"
     t.datetime "created_at",                 :null => false
     t.datetime "updated_at",                 :null => false
+  end
+
+  create_table "games", :force => true do |t|
+    t.string   "name"
+    t.text     "description"
+    t.text     "text"
+    t.integer  "score",            :default => 0
+    t.integer  "chances"
+    t.text     "success_response"
+    t.text     "failure_response"
+    t.text     "default_response"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
   end
 
   create_table "rails_admin_histories", :force => true do |t|
@@ -111,12 +124,23 @@ ActiveRecord::Schema.define(:version => 20120909023146) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "user_games", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "game_id"
+    t.integer  "state"
+    t.integer  "chances"
+    t.integer  "result"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "users", :force => true do |t|
     t.string   "phone_number"
     t.string   "name"
     t.integer  "score"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.boolean  "enabled",      :default => true
   end
 
 end
