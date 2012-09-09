@@ -13,4 +13,18 @@ class Text < ActiveRecord::Base
       :storage => :s3,
       :s3_credentials => S3_CREDENTIALS,
       :bucket => "crazygf"
+      
+  def self.get_text_for_user(user)
+    if user.conversations.size == 0
+      self.find(:first, :order => "RANDOM()")
+    else
+      self.find(:first, :conditions => ["id NOT IN (?)", user.converstion_list], :order => 'RANDOM()')
+    end
+  end
+  
+  def self.get_text_randomly
+    self.find(:first, :order => "RANDOM()")
+  end
+  
+  
 end
