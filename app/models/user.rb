@@ -24,5 +24,10 @@ class User < ActiveRecord::Base
   def init_score
     self.score = 0
   end
+  
+  def disable_user
+    self.enabled = false
+    self.save
+  end
      
 end

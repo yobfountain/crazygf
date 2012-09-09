@@ -2,6 +2,8 @@ class ApiController < ApplicationController
   
   protect_from_forgery :except => :receive_text 
   
+  UNSUB_KEYWORDS = ['unsub', 'unsubscribe', 'quit', 'stop']
+  
   def receive_text 
     message_body = params["Body"]
     from_number = params["From"]
@@ -41,6 +43,12 @@ class ApiController < ApplicationController
         :to => number_to_send_to,
         :body => "This is an message. It gets sent to #{number_to_send_to}"
       )
+    end
+    
+    def check_for_unsubscribe
+      if UNSUB_KEYWORDS
+        @user.disable_user
+      end
     end
   
 end
