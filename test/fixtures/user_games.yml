@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  game_id: 1
+  state: 1
+  chances: 1
+  result: 1
+
+two:
+  user_id: 1
+  game_id: 1
+  state: 1
+  chances: 1
+  result: 1

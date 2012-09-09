@@ -1,8 +1,11 @@
 class User < ActiveRecord::Base
-  attr_accessible :name, :phone_number, :score
+  attr_accessible :name, :phone_number, :score, :enabled
   before_create :init_score
   has_many :conversations
+
   has_many :dynamic_conversations
+  has_many :user_games
+
 
   def conversation_list
     conversations.map(&:text_id)
@@ -11,6 +14,10 @@ class User < ActiveRecord::Base
   def dynamic_conversation_list
     dynamic_conversations.map(&:dynamic_text_response_id)
   end 
+  
+  def self.active_users
+    find :all, :conditions => ['enabled = ?', 1]
+  end
   
   private
   
