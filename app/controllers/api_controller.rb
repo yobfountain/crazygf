@@ -19,7 +19,7 @@ class ApiController < ApplicationController
       @text = "Adios"
     #case 2 - User is new 
     elsif @user and @new_user
-      @text = "Hey sorry, I lost my contacts, who is this?"
+      @text = "I lost all of my numbers, who is this?"
     #case 3 - @dynamic_text exists 
     elsif @user and @dynamic_text
       @get_text = @dynamic_text.dynamic_text_responses.find :first, :order => 'RANDOM()'
