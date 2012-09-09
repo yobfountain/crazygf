@@ -5,18 +5,16 @@ class ApiController < ApplicationController
   def receive_text 
     message_body = params["Body"]
     from_number = params["From"]
+    
     @user = User.find_or_create_by_phone_number(from_number)
-    if @user and message_body == "register"
-      @twilio_client = Twilio::REST::Client.new CRAZYGF_TWILIO_ACCOUNT_SID, CRAZYGF_TWILIO_SECRET
-      @twilio_client.account.sms.messages.create(
-        :from => "+1#{CRAZYGF_TWILIO_MOBILE_NUMBER}",
-        :to => @user.phone_number,
-        :body => "Hello baby! I miss you"
-      )
-      render :text => 'User registered'
-    else
-      #do logic
-      @text = Text.first
+    
+    if @user
+      @text = Text.get_text_for_user(@user)
+      if @text
+        @conversation = Conversation.create(:text_id => @text.id, :user_id => @user.id)
+      else
+        @text = Text.get_text_randomly
+      end
       @twilio_client = Twilio::REST::Client.new CRAZYGF_TWILIO_ACCOUNT_SID, CRAZYGF_TWILIO_SECRET
       @twilio_client.account.sms.messages.create(
         :from => "+1#{CRAZYGF_TWILIO_MOBILE_NUMBER}",
@@ -25,6 +23,7 @@ class ApiController < ApplicationController
       )
       render :text => 'Ok'
     end
+    
   end
   
   
