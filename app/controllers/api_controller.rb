@@ -1,7 +1,7 @@
 class ApiController < ApplicationController
   protect_from_forgery :except => :receive_text 
   
-  UNSUB_KEYWORDS = ['unsub', 'unsubscribe', 'quit', 'stop']
+  UNSUB_KEYWORDS = ['unsub', 'unsubscribe', 'quit', 'stop', 'Stop', 'Quit', 'Unsubscribe', 'Unsub']
   
   def receive_text    
     message_body = params["Body"]
