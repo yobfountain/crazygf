@@ -1,33 +1,59 @@
 class ApiController < ApplicationController
-  
   protect_from_forgery :except => :receive_text 
   
   UNSUB_KEYWORDS = ['unsub', 'unsubscribe', 'quit', 'stop']
   
-  def receive_text 
+  def receive_text    
     message_body = params["Body"]
     from_number = params["From"]
-    
+
     @user = User.find_or_create_by_phone_number(from_number)
-    
-    if @user
-      @text = Text.get_text_for_user(@user)
-      if @text
-        @conversation = Conversation.create(:text_id => @text.id, :user_id => @user.id)
-      else
-        @text = Text.get_text_randomly
+    @dynamic_text = DynamicText.search(message_body)
+    @new_user = true if @user.conversations.size == 0
+    @unsuscribe = check_for_unsubscribe(message_body)
+
+    #case 1 - User is unsuscribe
+    if @user and @unsuscribe
+      #unsuscribe user
+      @user.disable_user
+      @text = "Adios"
+    #case 2 - User is new 
+    elsif @user and @new_user
+      @text = "Hey sorry, I lost my contacts, who is this?"
+    #case 3 - @dynamic_text exists 
+    elsif @user and @dynamic_text
+      @get_text = @dynamic_text.dynamic_text_responses.find :first, :order => 'RANDOM()'
+      @text = @get_text.text
+
+    #case 3 - get_text_for_user
+    elsif @user
+      @get_text = Text.get_text_for_user(@user)
+      @text = @get_text.text if @get_text
+      #case 4 - get_text_fandomly
+      if @text == nil
+        @get_text = Text.get_text_randomly
+        @text = @get_text.text
       end
+    end 
+    
+    if @get_text and @user
+      @user.enabled_user
+      @conversation = Conversation.create(:text_id => @get_text.id, :user_id => @user.id)
+    end
+
+    if @text and @user
       @twilio_client = Twilio::REST::Client.new CRAZYGF_TWILIO_ACCOUNT_SID, CRAZYGF_TWILIO_SECRET
       @twilio_client.account.sms.messages.create(
         :from => "+1#{CRAZYGF_TWILIO_MOBILE_NUMBER}",
         :to => @user.phone_number,
-        :body => @text.text
+        :body => @text
       )
       render :text => 'Ok'
+    else
+      render :text => 'Fail'
     end
     
   end
-  
   
   def send_text_message
       number_to_send_to = params[:number_to_send_to]
@@ -45,10 +71,14 @@ class ApiController < ApplicationController
       )
     end
     
-    def check_for_unsubscribe
-      if UNSUB_KEYWORDS
-        @user.disable_user
+    def check_for_unsubscribe(body)
+      unsuscribe = false
+      UNSUB_KEYWORDS.each do |kw|
+        if body == kw
+           unsuscribe = true
+        end
       end
+      return unsuscribe
     end
   
 end
