@@ -11,7 +11,10 @@ class ApiController < ApplicationController
     @user = User.find_or_create_by_phone_number(from_number)
     @dynamic_text = DynamicText.search(message_body)
     @new_user = true if @user.conversations.size == 0
+ 
+    @incoming_message = IncomingMessage.create(:user_id => @user.id, :content => message_body)
     @unsubscribe = check_for_unsubscribe(message_body)
+
 
     #case 1 - User is unsubscribe
     if @user and @unsubscribe
@@ -39,6 +42,10 @@ class ApiController < ApplicationController
     
     if @get_text and @user
       @user.enabled_user
+      if @incoming_message
+        @incoming_message.response = @get_text
+        @incoming_message.save
+      end
       if @dynamic_text
         @conversation = DynamicConversation.create(:dynamic_text_response_id => @get_text.id, :user_id => @user.id)
       else
