@@ -1,5 +1,6 @@
 class ApiController < ApplicationController
   protect_from_forgery :except => :receive_text 
+  skip_before_filter :verify_authenticity_token   
   
   UNSUB_KEYWORDS = ['unsub', 'unsubscribe', 'quit', 'stop', 'Stop', 'Quit', 'Unsubscribe', 'Unsub']
   
@@ -10,11 +11,11 @@ class ApiController < ApplicationController
     @user = User.find_or_create_by_phone_number(from_number)
     @dynamic_text = DynamicText.search(message_body)
     @new_user = true if @user.conversations.size == 0
-    @unsuscribe = check_for_unsubscribe(message_body)
+    @unsubscribe = check_for_unsubscribe(message_body)
 
-    #case 1 - User is unsuscribe
-    if @user and @unsuscribe
-      #unsuscribe user
+    #case 1 - User is unsubscribe
+    if @user and @unsubscribe
+      #unsubscribe user
       @user.disable_user
       @text = "Adios"
     #case 2 - User is new 
@@ -29,7 +30,7 @@ class ApiController < ApplicationController
     elsif @user
       @get_text = Text.get_text_for_user(@user)
       @text = @get_text.text if @get_text
-      #case 4 - get_text_fandomly
+      #case 4 - get_text_randomly
       if @text == nil
         @get_text = Text.get_text_randomly
         @text = @get_text.text
@@ -76,13 +77,13 @@ class ApiController < ApplicationController
     end
     
     def check_for_unsubscribe(body)
-      unsuscribe = false
+      unsubscribe = false
       UNSUB_KEYWORDS.each do |kw|
         if body == kw
-           unsuscribe = true
+           unsubscribe = true
         end
       end
-      return unsuscribe
+      return unsubscribe
     end
   
 end
