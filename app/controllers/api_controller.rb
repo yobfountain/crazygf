@@ -60,9 +60,13 @@ class ApiController < ApplicationController
         :to => @user.phone_number,
         :body => @text
       )
-      render :text => 'Ok'
+      @xml_response = {:response => "Ok"}
     else
-      render :text => 'Fail'
+      @xml_response = {:response => "Ok"}
+    end
+    
+    respond_to do |format|
+      format.xml { render :xml => @xml_response.to_xml }
     end
     
   end
