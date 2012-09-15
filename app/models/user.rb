@@ -2,7 +2,7 @@ class User < ActiveRecord::Base
   attr_accessible :name, :phone_number, :score, :enabled
   before_create :init_score
   has_many :conversations
-
+  has_many :incoming_messages
   has_many :dynamic_conversations
   has_many :user_games
 
