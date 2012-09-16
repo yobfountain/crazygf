@@ -66,11 +66,11 @@ class ApiController < ApplicationController
         :to => @user.phone_number,
         :body => @text
       )
-      render :text => 'Ok'
+      @xml_response = "Ok"
     else
-      render :text => 'Fail'
+      @xml_response = "failure"
     end
-    
+    render 'receive_text.xml.erb', :content_type => 'text/xml'
   end
   
   #not currently used
