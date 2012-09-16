@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120915205958) do
+ActiveRecord::Schema.define(:version => 20120916162600) do
 
   create_table "admins", :force => true do |t|
     t.string   "email",                  :default => "", :null => false
@@ -158,6 +158,16 @@ ActiveRecord::Schema.define(:version => 20120915205958) do
     t.datetime "created_at",                     :null => false
     t.datetime "updated_at",                     :null => false
     t.boolean  "enabled",      :default => true
+  end
+
+  create_table "voicemails", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "url"
+    t.boolean  "approved"
+    t.boolean  "featured"
+    t.integer  "duration"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end

@@ -27,8 +27,10 @@ class Text < ActiveRecord::Base
       
   def self.get_text_for_user(user)
     if user.conversations.size == 0
-      self.find(:first, :order => "RANDOM()")
+      # Hardcoded first response to text id 1 ("I lost all my numbers, who is this?")
+      self.find(1)
     else
+      # Get random unused text
       self.find(:first, :conditions => ["id NOT IN (?)", user.conversation_list], :order => 'RANDOM()')
     end
   end

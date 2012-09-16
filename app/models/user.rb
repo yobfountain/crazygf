@@ -5,6 +5,7 @@ class User < ActiveRecord::Base
   has_many :incoming_messages
   has_many :dynamic_conversations
   has_many :user_games
+  has_many :voicemails
 
 
   def conversation_list

@@ -52,6 +52,9 @@ Crazygf::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
+  match '/stats' => 'home#stats'
+  match 'api/twilio/call/' => 'Api#receive_call', :via => :post
+  match 'api/twilio/record/' => 'Api#record_call', :via => :post
   match 'api/twilio/sms'  => 'Api#receive_text', :via => :post
   root :to => 'home#index'
 

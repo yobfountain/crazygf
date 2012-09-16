@@ -11,6 +11,7 @@ class ApiController < ApplicationController
     @user = User.find_or_create_by_phone_number(from_number)
     @dynamic_text = DynamicText.search(message_body)
     @new_user = true if @user.conversations.size == 0
+    @first_reply = true if @user.conversations.size == 1
  
     @incoming_message = IncomingMessage.create(:user_id => @user.id, :content => message_body)
     @unsubscribe = check_for_unsubscribe(message_body)
@@ -21,19 +22,24 @@ class ApiController < ApplicationController
       #unsubscribe user
       @user.disable_user
       @text = "Adios"
-    #case 2 - User is new 
-    #elsif @user and @new_user
-    #  @text = "I lost all my numbers, who is this?"
+    
+    #case 2 - User is first_reply
+    if @user and @first_reply
+      @user.name == message_body
+      @user.save
+      @get_text = Text.get_text_for_user(@user)
+      @text = @get_text.text if @get_text
+      
     #case 3 - @dynamic_text exists 
     elsif @user and @dynamic_text
       @get_text = @dynamic_text.dynamic_text_responses.find :first, :order => 'RANDOM()'
       @text = @get_text.text
 
-    #case 3 - get_text_for_user
+    #case 4 - get_text_for_user
     elsif @user
       @get_text = Text.get_text_for_user(@user)
       @text = @get_text.text if @get_text
-      #case 4 - get_text_randomly
+      #case 5 - get_text_randomly
       if @text == nil
         @get_text = Text.get_text_randomly
         @text = @get_text.text
@@ -67,6 +73,7 @@ class ApiController < ApplicationController
     
   end
   
+  #not currently used
   def send_text_message
       number_to_send_to = params[:number_to_send_to]
 
@@ -91,6 +98,35 @@ class ApiController < ApplicationController
         end
       end
       return unsubscribe
+    end
+    
+    def receive_call    
+      from_number = params["From"]
+      @user = User.find_or_initialize_by_phone_number(from_number)
+      if @user.new_record?
+        @user.save
+        # new user calling, don't record message
+        # ogm_sms plays the ogm then redirects to 'api/twilio/sms'
+        render 'ogm_sms.xml'
+        # TODO: add send follow up text        
+      else
+        # known user, record voicemail
+        render 'ogm_record.xml'
+    end
+    
+    # called from 'ogm_record.xml'
+    # '/api/twilio/record'
+    def record_call
+      from_number = params["From"]
+      voicemail_url = params["RecordingUrl"]
+      voicemail_duration = params["RecordingDuration"]
+      
+      voicemail = Voicemail.new
+      voicemail.user_id = User.find_or_create_by_phone_number(from_number)
+      voicemail.url = voicemail_url
+      voicemail.duration = voicemail_duration
+      voicemail.save
+      
     end
   
 end

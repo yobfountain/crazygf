@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 1
+  url: MyString
+  approved: false
+  featured: false
+  duration: 1
+
+two:
+  user_id: 1
+  url: MyString
+  approved: false
+  featured: false
+  duration: 1
