@@ -7,13 +7,14 @@ class ApiController < ApplicationController
   def receive_text    
     message_body = params["Body"]
     from_number = params["From"]
-
     @user = User.find_or_create_by_phone_number(from_number)
+    
+    
     @dynamic_text = DynamicText.search(message_body)
     @new_user = true if @user.conversations.size == 0
     @first_reply = true if @user.conversations.size == 1
- 
     @incoming_message = IncomingMessage.create(:user_id => @user.id, :content => message_body)
+    
     @unsubscribe = check_for_unsubscribe(message_body)
 
 
@@ -22,8 +23,9 @@ class ApiController < ApplicationController
       #unsubscribe user
       @user.disable_user
       @text = "Adios"
-    
     #case 2 - User is first_reply
+    
+    else
     if @user and @first_reply
       @user.name == message_body
       @user.save
@@ -58,6 +60,7 @@ class ApiController < ApplicationController
         @conversation = Conversation.create(:text_id => @get_text.id, :user_id => @user.id)
       end
     end
+  end
 
     if @text and @user
       @twilio_client = Twilio::REST::Client.new CRAZYGF_TWILIO_ACCOUNT_SID, CRAZYGF_TWILIO_SECRET
@@ -73,34 +76,17 @@ class ApiController < ApplicationController
     render 'receive_text.xml.erb', :content_type => 'text/xml'
   end
   
-  #not currently used
-  def send_text_message
-      number_to_send_to = params[:number_to_send_to]
-
-      twilio_sid = "abc123"
-      twilio_token = "foobar"
-      twilio_phone_number = "6165555555"
-
-      @twilio_client = Twilio::REST::Client.new twilio_sid, twilio_token
-
-      @twilio_client.account.sms.messages.create(
-        :from => "+1#{CRAZYGF_TWILIO_MOBILE_NUMBER}",
-        :to => number_to_send_to,
-        :body => "This is an message. It gets sent to #{number_to_send_to}"
-      )
-    end
-    
-    def check_for_unsubscribe(body)
-      unsubscribe = false
-      UNSUB_KEYWORDS.each do |kw|
-        if body == kw
-           unsubscribe = true
-        end
+  def check_for_unsubscribe(body)
+    unsubscribe = false
+    UNSUB_KEYWORDS.each do |kw|
+      if body == kw
+        unsubscribe = true
       end
-      return unsubscribe
     end
+    return unsubscribe
+  end
     
-    def receive_call    
+  def receive_call    
       from_number = params["From"]
       @user = User.find_or_initialize_by_phone_number(from_number)
       if @user.new_record?
@@ -112,6 +98,7 @@ class ApiController < ApplicationController
       else
         # known user, record voicemail
         render 'ogm_record.xml'
+      end
     end
     
     # called from 'ogm_record.xml'
